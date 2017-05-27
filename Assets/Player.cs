@@ -107,21 +107,6 @@ public class Player : MonoBehaviour
                             byte packedDirection = packedInputs[input].directions[directionIndex];
                             position += playerPhysics.SimulateStep(position, packedDirection);
                         }
-
-                        if (packedInputs[input].position.x > -9999)
-                        {
-                            if ((position - packedInputs[input].position).magnitude > 0.0015f)
-                            {
-                                //Debug.Log((position - packedInputs[input].position).magnitude);
-                                /*
-                                NetworkWriter writer = new NetworkWriter();
-                                writer.Write((byte)0);
-                                writer.Write(packedInputs[input].position);
-                                writer.Write(position.x);
-                                writer.Write(position.y);
-                                writer.Write(position.z);*/
-                            }
-                        }
                     }
 
                     transform.position = position;
