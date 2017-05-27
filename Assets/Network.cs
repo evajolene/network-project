@@ -83,6 +83,15 @@ public class Network : MonoBehaviour
         }
     }
 
+    //Client's identifier.
+    public int Connection
+    {
+        get
+        {
+            return connection;
+        }
+    }
+
     public bool IsHost()
     {
         return socket >= 0 && !bIsClient;

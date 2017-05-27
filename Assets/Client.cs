@@ -4,14 +4,12 @@ using UnityEngine.Networking;
 public class Client : MonoBehaviour
 {
     private Network network;
-    private bool bIsConnectionConfirmed;
-    private byte identity;
+    private int identity;
     private int connection;
 
     void Start()
     {
         network = FindObjectOfType<Network>() as Network;
-        bIsConnectionConfirmed = false;
         identity = 0;
     }
 
@@ -37,26 +35,21 @@ public class Client : MonoBehaviour
         switch (messageType)
         {
             case NetworkEventType.ConnectEvent:
-                bIsConnectionConfirmed = true;
                 this.connection = connection;
+                identity = network.Connection;
                 Debug.Log("Connection to host was confirmed.");
                 break;
             case NetworkEventType.DataEvent:
-                if (size == 1)
-                {
-                    Debug.Log("Got identity from host: " + buffer[0]);
-                    identity = buffer[0];
-                }
                 break;
         }
     }
 
     //Returns zero if instance isn't a connected client.
-    public byte Identity
+    public int Identity
     {
         get
         {
-            return (bIsConnectionConfirmed) ? identity : (byte)0;
+            return identity;
         }
     }
 
