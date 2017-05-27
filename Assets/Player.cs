@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ClientMoved(object Sender, Host.MessageEventArgs Arguments)
+    private void ClientMoved(object Sender, MessageEventArgs Arguments)
     {
         int size = Arguments.size;
 
@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
             {
                 if (!bHasHostStarted)
                 {
-                    Host.MessageEvent messageEvent = host.GetMessageListener(0);
+                    MessageEvent messageEvent = host.GetMessageListener(0);
                     messageEvent.eventHandler += ClientMoved;
 
                     bHasHostStarted = true;
