@@ -92,7 +92,7 @@ public class Host : MonoBehaviour
                         {
                             if (messageEvents[index].messageType == buffer[0])
                             {
-                                messageEvents[index].Event(buffer, size);
+                                messageEvents[index].Event(connection, buffer, size);
                                 break;
                             }
                         }
