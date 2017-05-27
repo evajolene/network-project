@@ -10,7 +10,6 @@ public class Client : MonoBehaviour
 
     void Start()
     {
-        Tester();
         network = FindObjectOfType<Network>() as Network;
         bIsConnectionConfirmed = false;
         identity = 0;
@@ -59,14 +58,6 @@ public class Client : MonoBehaviour
         {
             return (bIsConnectionConfirmed) ? identity : (byte)0;
         }
-    }
-
-    public void Tester()
-    {
-        NetworkWriter writer = new NetworkWriter();
-        writer.Write((short)1000);
-        byte[] bytes = writer.ToArray();
-        Debug.Log(bytes.Length);
     }
 
     public void SendTimestampedMessage(byte MessageType, byte[] Data, bool bUseReliableChannel)
