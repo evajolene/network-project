@@ -103,4 +103,26 @@ public class Host : MonoBehaviour
             pollCount--;
         }
     }
+
+    public void SendTimestampedMessage(int ClientIdentity, byte MessageType, int Timestamp, byte[] Data, bool bUseReliableChannel)
+    {
+        NetworkWriter writer = new NetworkWriter();
+
+        writer.Write(MessageType);
+        writer.Write(Timestamp);
+
+        for (int index = 0; index < Data.Length; index++)
+        {
+            writer.Write(Data[index]);
+        }
+
+        byte[] bytes = writer.ToArray();
+
+        byte sendError;
+        NetworkTransport.Send
+        (
+            network.Socket, ClientIdentity, (bUseReliableChannel) ? network.ReliableChannel : network.UnreliableChannel,
+            bytes, bytes.Length, out sendError
+        );
+    }
 }
