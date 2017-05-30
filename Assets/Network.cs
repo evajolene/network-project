@@ -29,6 +29,22 @@ public class Network : MonoBehaviour
         }
     }
 
+    public NetworkEventType ReceiveMessage(out int Connection, out byte[] Buffer, out int Size)
+    {
+        int host, channel;
+        byte[] buffer = new byte[64];
+        byte error;
+
+        NetworkEventType messageType = NetworkTransport.Receive
+        (
+            out host, out Connection, out channel, buffer, buffer.Length, out Size, out error
+        );
+
+        Buffer = buffer;
+
+        return messageType;
+    }
+
     public void Host()
     {
         if (socket >= 0)

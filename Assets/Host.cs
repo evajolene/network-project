@@ -62,17 +62,11 @@ public class Host : MonoBehaviour
 
         while (pollCount > 0)
         {
-            int host;
             int connection;
-            int channel;
-            byte[] buffer = new byte[32];
+            byte[] buffer;
             int size;
-            byte error;
 
-            NetworkEventType messageType = NetworkTransport.Receive
-            (
-                out host, out connection, out channel, buffer, buffer.Length, out size, out error
-            );
+            NetworkEventType messageType = network.ReceiveMessage(out connection, out buffer, out size);
 
             switch (messageType)
             {
@@ -82,8 +76,6 @@ public class Host : MonoBehaviour
                 case NetworkEventType.ConnectEvent:
                     byte connectionIndex = (byte)connection;
                     connections.Add(connectionIndex);
-                    byte sendError;
-                    NetworkTransport.Send(host, connection, network.ReliableChannel, new byte[]{ connectionIndex }, 1, out sendError);
                     break;
                 case NetworkEventType.DataEvent:
                     if (size >= 5)

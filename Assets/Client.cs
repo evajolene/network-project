@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public class Client : MonoBehaviour
 {
     private Network network;
     private int identity;
     private int connection;
+
+    private List<MessageEvent> messageEvents;
 
     void Start()
     {
@@ -20,17 +23,11 @@ public class Client : MonoBehaviour
             return;
         }
 
-        int host;
         int connection;
-        int channel;
-        byte[] buffer = new byte[32];
+        byte[] buffer;
         int size;
-        byte error;
 
-        NetworkEventType messageType = NetworkTransport.Receive
-        (
-            out host, out connection, out channel, buffer, buffer.Length, out size, out error
-        );
+        NetworkEventType messageType = network.ReceiveMessage(out connection, out buffer, out size);
 
         switch (messageType)
         {
@@ -40,6 +37,17 @@ public class Client : MonoBehaviour
                 Debug.Log("Connection to host was confirmed.");
                 break;
             case NetworkEventType.DataEvent:
+                if (size >= 5)
+                {
+                    for (int index = 0; index < messageEvents.Count; index++)
+                    {
+                        if (messageEvents[index].messageType == buffer[0])
+                        {
+                            messageEvents[index].Event(connection, buffer, size);
+                            break;
+                        }
+                    }
+                }
                 break;
         }
     }
